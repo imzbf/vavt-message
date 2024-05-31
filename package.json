@@ -12,20 +12,6 @@
     "build": "vite build"
   },
   "homepage": "https://imzbf.github.io/vavt-message/",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/imzbf/vavt-message.git"
-  },
-  "bugs": {
-    "url": "https://github.com/imzbf/vavt-message/issues"
-  },
-  "files": [
-    "lib",
-    "types"
-  ],
-  "types": "./lib/types/index.d.ts",
-  "main": "./lib/index.umd.js",
-  "module": "./lib/index.mjs",
   "devDependencies": {
     "@types/node": "^20.1.0",
     "less": "^4.2.0",
