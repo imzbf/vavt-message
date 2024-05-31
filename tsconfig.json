@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationDir": "./types", // 类型声明文件输出目录
+    "emitDeclarationOnly": true // 只生成类型声明文件
+  },
+  "include": ["./index.ts"]
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@vavt/message</title>
+    <style>
+      [data-theme='dark'] {
+        background-color: #000;
+
+        button {
+          background-color: #000;
+          color: #fff;
+        }
+      }
+
+      button {
+        outline: none;
+        border: none;
+        padding-left: 6px 10px;
+      }
+
+      button + button {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="width: 100px; display: flex; flex-direction: column">
+      <button id="changeTheme">切换模式</button>
+      <button id="info">info</button>
+      <button id="error">error offsetTop40</button>
+      <button id="warning">warning 存在6s</button>
+      <button id="success">success 可关闭</button>
+      <button id="duration0">不会自动关闭</button>
+
+      <button id="closeAll">关闭全部</button>
+    </div>
+
+    <script type="module">
+      import { message } from './index.ts';
+
+      const msg =
+        'So even though we face the difficulties of today and tomorrow, I still have a dream.';
+
+      document.getElementById('changeTheme').onclick = () => {
+        const theme = document.documentElement.dataset.theme || 'light';
+        document.documentElement.dataset.theme = theme === 'dark' ? '' : 'dark';
+      };
+
+      document.getElementById('info').onclick = () => {
+        message.info(msg);
+      };
+
+      document.getElementById('warning').onclick = () => {
+        message.warning(msg, {
+          duration: 0,
+        });
+      };
+      document.getElementById('success').onclick = () => {
+        message.success(msg, {
+          closeable: true,
+        });
+      };
+
+      document.getElementById('duration0').onclick = () => {
+        message.info(msg, { duration: 0 });
+      };
+
+      document.getElementById('error').onclick = () => {
+        message.error(msg, {
+          offsetTop: 40,
+          duration: 0,
+        });
+      };
+
+      document.getElementById('closeAll').onclick = () => {
+        message.closeAll();
+      };
+    </script>
+  </body>
+</html>

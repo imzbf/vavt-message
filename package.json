@@ -1,0 +1,35 @@
+{
+  "name": "@vavt/message",
+  "version": "0.0.0",
+  "license": "MIT",
+  "keywords": [
+    "js",
+    "message"
+  ],
+  "description": "A native JS crafted message notification component, encompassing features for displaying messages, warnings, successes, and errors.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsx ./scripts/build.lib.mts && tsc --project tsconfig.json"
+  },
+  "homepage": "https://imzbf.github.io/vavt-message/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imzbf/vavt-message.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imzbf/vavt-message/issues"
+  },
+  "files": [
+    "lib",
+    "types"
+  ],
+  "types": "./lib/types/index.d.ts",
+  "main": "./lib/index.umd.js",
+  "module": "./lib/index.mjs",
+  "devDependencies": {
+    "@types/node": "^20.1.0",
+    "tsx": "^3.12.7",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  }
+}
