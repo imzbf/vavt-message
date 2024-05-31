@@ -1,0 +1,38 @@
+name: Doc Page Publish
+
+on:
+  push:
+    branches: [docs]
+  pull_request:
+    branches: [docs]
+
+jobs:
+  publish:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: node env
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - name: checkout
+        uses: actions/checkout@v4.1.6
+
+      - name: install
+        uses: borales/actions-yarn@v5.0.0
+        with:
+          cmd: install
+
+      - name: build
+        uses: borales/actions-yarn@v5.0.0
+        with:
+          cmd: build
+
+      - name: publish
+        uses: JamesIves/github-pages-deploy-action@v4.6.1
+        with:
+          branch: docs
+          folder: dist
+          target-folder: docs

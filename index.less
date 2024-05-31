@@ -1,0 +1,101 @@
+@prefix: ~'docs';
+
+@color: #3f4a54;
+@colorDark: #999;
+
+@hover: #333;
+@hoverdark: #fff;
+
+@colorReverse: #eee;
+@colorDarkReverse: #999;
+
+@borderColor: #e6e6e6;
+@borderColorDark: #2d2d2d;
+
+@borderColorReverse: #bebebe;
+@borderColorDarkReverse: #e6e6e6;
+
+@bkColor: #fff;
+@bkColorDark: #000;
+
+@codeBkColor: #282c34;
+@codeBkColorDark: #1a1a1a;
+
+// 在默认背景下凸出背景
+@bbkColor: #ececec;
+@bbkColorDark: #111;
+
+// 模仿antd的主色调
+@primaryColor: #73d13d;
+
+.css-vars(@isDark) {
+  --iz-color: if(@isDark, @colorDark, @color);
+  --iz-color-reverse: if(@isDark, @colorDarkReverse, @colorReverse);
+  --iz-hover-color: if(@isDark, @hoverdark, @hover);
+  --iz-hover-color-reverse: if(@isDark, @hover, @hoverdark);
+
+  --iz-bk-color: if(@isDark, @bkColorDark, @bkColor);
+  --iz-bk-color-outstand: if(@isDark, #111, #f6f6f6);
+  --iz-bk-hover-color: if(@isDark, @bbkColorDark, @bbkColor);
+
+  --iz-border-color: if(@isDark, #2d2d2d, #e6e6e6);
+  --iz-border-color-reverse: if(
+    @isDark,
+    @borderColorDarkReverse,
+    @borderColorReverse
+  );
+
+  --iz-border-hover-color: if(@isDark, #636262, #b9b9b9);
+  --iz-border-hover-color-reverse: if(
+    @isDark,
+    @borderColorReverse,
+    @borderColorDarkReverse
+  );
+
+  --iz-border-active-color: if(@isDark, #777, #999);
+
+  --iz-modal-mask: #00000073;
+  --md-scrollbar-bg-color: if(@isDark, #0f0f0f, #e2e2e2);
+  --md-scrollbar-thumb-color: if(@isDark, #2d2d2d, #0000004d);
+  --md-scrollbar-thumb-hover-color: if(@isDark, #3a3a3a, #00000059);
+  --md-scrollbar-thumb-active-color: if(@isDark, #3a3a3a, #00000061);
+}
+
+:root {
+  .css-vars(false);
+}
+
+:root[data-theme='dark'] {
+  .css-vars(true);
+
+  background-color: #000;
+}
+
+button {
+  width: fit-content;
+  height: auto;
+  outline: none;
+  font-weight: 400;
+  font-size: 1rem;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  user-select: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  line-height: 1.5;
+  background: transparent;
+  color: var(--iz-color);
+  border-color: var(--iz-border-color);
+}
+
+button:hover {
+  color: var(--iz-hover-color);
+  border-color: var(--iz-border-hover-color);
+}
+
+button + button {
+  margin-top: 10px;
+}
