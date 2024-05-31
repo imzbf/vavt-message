@@ -1,14 +1,25 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "strict": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "declarationDir": "./types", // 类型声明文件输出目录
-    "emitDeclarationOnly": true // 只生成类型声明文件
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["./index.ts"]
+  "include": ["./index.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -7,5 +7,5 @@
     "allowSyntheticDefaultImports": true,
     "strict": true
   },
-  "include": ["scripts/*.mts"]
+  "include": ["vite.config.mts"]
 }
