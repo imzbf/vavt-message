@@ -3,8 +3,13 @@
   "version": "0.0.0",
   "license": "MIT",
   "keywords": [
-    "js",
-    "message"
+    "message",
+    "info",
+    "warning",
+    "success",
+    "error",
+    "javascript",
+    "typescript"
   ],
   "description": "A native JS crafted message notification component, encompassing features for displaying messages, warnings, successes, and errors.",
   "scripts": {
@@ -23,7 +28,7 @@
     "lib",
     "types"
   ],
-  "types": "./lib/types/index.d.ts",
+  "types": "./types/index.d.ts",
   "main": "./lib/index.umd.js",
   "module": "./lib/index.mjs",
   "devDependencies": {
