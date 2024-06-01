@@ -1,7 +1,11 @@
-import { defineConfig } from 'vite';
+import { ConfigEnv, UserConfigExport } from 'vite';
+import { homepage } from './package.json';
 
-export default defineConfig({
-  build: {
-    outDir: 'docs',
-  },
-});
+export default ({ mode }: ConfigEnv): UserConfigExport => {
+  return {
+    base: mode === 'preview' ? homepage : '/',
+    build: {
+      outDir: mode === 'preview' ? 'docs' : 'dist',
+    },
+  };
+};
