@@ -28,7 +28,7 @@ jobs:
       - name: build
         uses: borales/actions-yarn@v5.0.0
         with:
-          cmd: build
+          cmd: build:preview
 
       - name: publish
         uses: JamesIves/github-pages-deploy-action@v4.6.1
