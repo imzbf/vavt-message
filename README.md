@@ -2,6 +2,8 @@
 
 原生 js 编写的消息提示组件。包括消息、警告、成功和错误提示。
 
+![](https://imzbf.github.io/vavt-message/vavt-message.gif)
+
 ## 安装
 
 ```bash

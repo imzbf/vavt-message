@@ -58,8 +58,9 @@
         });
       };
       document.getElementById('success').onclick = () => {
-        message.success(msg, {
+        message.success('包括消息、警告、成功和错误提示。', {
           closeable: true,
+          duration: 0,
         });
       };
 
