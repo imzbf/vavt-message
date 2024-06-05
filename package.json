@@ -1,6 +1,6 @@
 {
   "name": "@vavt/message",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "keywords": [
     "js",
@@ -21,6 +21,6 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
-    "@vavt/message": "^1.0.0"
+    "@vavt/message": "^1.0.1"
   }
 }
