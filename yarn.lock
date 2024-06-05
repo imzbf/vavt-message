@@ -319,10 +319,10 @@
   dependencies:
     undici-types "~5.26.4"
 
-"@vavt/message@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@vavt/message/-/message-1.0.0.tgz#f720ec77ac88a9a562289bbe40a88de9d5f04258"
-  integrity sha512-N4yzQctAUUI/I1slGpiOdSlzcAxmy3L6XLe5Ypyvx/6p+wdY/tx7YPVlUjiOqmToccTi3kB+hXPOHwJZzzD0Iw==
+"@vavt/message@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@vavt/message/-/message-1.0.1.tgz#ab2481d1ef1d05b9d6d10652975312d5f8e01473"
+  integrity sha512-aaa6cAZVeTCzz+m0/9VPj2bxsc+e8A1ROjxGFne7VzxvhwHlkVObpf7cZ4K5t6dtJ05hdDHcD3d48MvjXTCUQQ==
 
 buffer-from@^1.0.0:
   version "1.1.2"
