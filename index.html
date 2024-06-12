@@ -30,9 +30,13 @@
       <button id="changeTheme">切换模式</button>
       <button id="info">info</button>
       <button id="error">error offsetTop40</button>
+
       <button id="warning">warning 存在6s</button>
+
       <button id="success">success 可关闭</button>
+
       <button id="duration0">不会自动关闭</button>
+      <button id="duration01">更新内容</button>
 
       <button id="closeAll">关闭全部</button>
     </div>
@@ -54,24 +58,30 @@
 
       document.getElementById('warning').onclick = () => {
         message.warning(msg, {
-          duration: 0,
+          duration: 6000,
         });
       };
       document.getElementById('success').onclick = () => {
         message.success('包括消息、警告、成功和错误提示。', {
           closeable: true,
-          duration: 0,
         });
       };
 
+      let obj = {
+        close: () => {},
+        update: () => {},
+      };
+
       document.getElementById('duration0').onclick = () => {
-        message.info(msg, { duration: 0 });
+        obj = message.error(msg, { duration: 0 });
+      };
+      document.getElementById('duration01').onclick = () => {
+        obj.update(Math.random());
       };
 
       document.getElementById('error').onclick = () => {
         message.error(msg, {
           offsetTop: 40,
-          duration: 0,
         });
       };
 

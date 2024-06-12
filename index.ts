@@ -180,29 +180,52 @@ export const Message = class {
   info(message: string, options?: StrikeMessageOptions) {
     const messageObj = this.#showMessage('info', message, options);
 
-    return () => {
-      this.#handleClose(messageObj);
+    return {
+      close: () => {
+        this.#handleClose(messageObj);
+      },
+      update: (newMessages: string) => {
+        messageObj.ele.innerHTML = `${ICONS.info}${newMessages}`;
+      },
     };
   }
+
   warning(message: string, options?: StrikeMessageOptions) {
     const messageObj = this.#showMessage('warning', message, options);
 
-    return () => {
-      this.#handleClose(messageObj);
+    return {
+      close: () => {
+        this.#handleClose(messageObj);
+      },
+      update: (newMessages: string) => {
+        messageObj.ele.innerHTML = `${ICONS.warning}${newMessages}`;
+      },
     };
   }
+
   success(message: string, options?: StrikeMessageOptions) {
     const messageObj = this.#showMessage('success', message, options);
 
-    return () => {
-      this.#handleClose(messageObj);
+    return {
+      close: () => {
+        this.#handleClose(messageObj);
+      },
+      update: (newMessages: string) => {
+        messageObj.ele.innerHTML = `${ICONS.success}${newMessages}`;
+      },
     };
   }
+
   error(message: string, options?: StrikeMessageOptions) {
     const messageObj = this.#showMessage('error', message, options);
 
-    return () => {
-      this.#handleClose(messageObj);
+    return {
+      close: () => {
+        this.#handleClose(messageObj);
+      },
+      update: (newMessages: string) => {
+        messageObj.ele.innerHTML = `${ICONS.error}${newMessages}`;
+      },
     };
   }
 

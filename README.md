@@ -16,10 +16,16 @@ yarn add @vavt/message
 import { message } from '@vavt/message';
 
 // error, success, info, warning
-const closeFN = message.info('这是一条普通信息');
+const { close, update } = message.info('这是一条普通信息');
+
+// 更新内容
+update('这是更新后的内容');
 
 // 手动关闭
-closeFN();
+close();
+
+// 关闭全部
+message.closeAll();
 ```
 
 ## 属性
