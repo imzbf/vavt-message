@@ -28,8 +28,9 @@
     "lib",
     "types"
   ],
+  "type": "module",
   "types": "./types/index.d.ts",
-  "main": "./lib/index.umd.js",
+  "main": "./lib/index.cjs",
   "module": "./lib/index.mjs",
   "devDependencies": {
     "@types/node": "^20.1.0",

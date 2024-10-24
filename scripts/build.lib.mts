@@ -18,7 +18,20 @@ const resolvePath = (p: string) => path.resolve(__dirname, p);
           index: resolvePath('../index.ts'),
         },
         name: 'VavtMessage',
-        formats: ['es', 'umd'],
+        formats: ['es', 'cjs', 'umd'],
+        fileName(format) {
+          switch (format) {
+            case 'es': {
+              return `[name].mjs`;
+            }
+            case 'cjs': {
+              return `[name].cjs`;
+            }
+            default: {
+              return `index.js`;
+            }
+          }
+        },
       },
     },
   });
