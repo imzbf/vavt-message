@@ -41,6 +41,7 @@
       <button id="closeAll">关闭全部</button>
 
       <button id="center">居中消息</button>
+      <button id="noIcon">不显示图标</button>
     </div>
 
     <script type="module">
@@ -93,6 +94,12 @@
       document.getElementById('center').onclick = () => {
         message.info(msg, {
           position: 'center',
+        });
+      };
+
+      document.getElementById('noIcon').onclick = () => {
+        message.info(msg, {
+          showIcon: false,
         });
       };
     </script>

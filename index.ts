@@ -10,6 +10,10 @@ interface MessageOptions {
    * 消息出现位置，'top'（默认）或 'center'（居中）
    */
   position?: 'top' | 'center';
+  /**
+   * 是否显示图标，默认 true
+   */
+  showIcon?: boolean;
 }
 
 type StrikeMessageOptions = Omit<MessageOptions, 'darkSelector'>;
@@ -53,6 +57,7 @@ export const Message = class {
     darkSelector: DEFAULT_SELECTOR,
     zIndex: 9999,
     position: 'top',
+    showIcon: true,
   };
   #list: Set<MessageObj> = new Set();
 
@@ -121,7 +126,7 @@ export const Message = class {
     const ele = document.createElement('div');
 
     // 内容
-    ele.innerHTML = `${ICONS[type]}${message}`;
+    ele.innerHTML = `${_options.showIcon !== false ? ICONS[type] : ''}${message}`;
 
     // 属性
     ele.classList.add(`${PREFIX}-message`, `${PREFIX}-message-${type}`);
@@ -213,7 +218,9 @@ export const Message = class {
         this.#handleClose(messageObj);
       },
       update: (newMessages: string) => {
-        messageObj.ele.innerHTML = `${ICONS.info}${newMessages}`;
+        messageObj.ele.innerHTML = `${
+          (options?.showIcon ?? this.#options.showIcon) !== false ? ICONS.info : ''
+        }${newMessages}`;
       },
     };
   }
@@ -226,7 +233,9 @@ export const Message = class {
         this.#handleClose(messageObj);
       },
       update: (newMessages: string) => {
-        messageObj.ele.innerHTML = `${ICONS.warning}${newMessages}`;
+        messageObj.ele.innerHTML = `${
+          (options?.showIcon ?? this.#options.showIcon) !== false ? ICONS.warning : ''
+        }${newMessages}`;
       },
     };
   }
@@ -239,7 +248,9 @@ export const Message = class {
         this.#handleClose(messageObj);
       },
       update: (newMessages: string) => {
-        messageObj.ele.innerHTML = `${ICONS.success}${newMessages}`;
+        messageObj.ele.innerHTML = `${
+          (options?.showIcon ?? this.#options.showIcon) !== false ? ICONS.success : ''
+        }${newMessages}`;
       },
     };
   }
@@ -252,7 +263,9 @@ export const Message = class {
         this.#handleClose(messageObj);
       },
       update: (newMessages: string) => {
-        messageObj.ele.innerHTML = `${ICONS.error}${newMessages}`;
+        messageObj.ele.innerHTML = `${
+          (options?.showIcon ?? this.#options.showIcon) !== false ? ICONS.error : ''
+        }${newMessages}`;
       },
     };
   }
