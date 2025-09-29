@@ -13,7 +13,7 @@
   ],
   "description": "A native JS crafted message notification component, encompassing features for displaying messages, warnings, successes, and errors.",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 6024",
     "build": "tsx ./scripts/build.lib.mts && tsc --project tsconfig.json"
   },
   "homepage": "https://imzbf.github.io/vavt-message/",

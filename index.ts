@@ -6,6 +6,10 @@ interface MessageOptions {
   closeable?: boolean;
   darkSelector?: string;
   zIndex?: number;
+  /**
+   * 消息出现位置，'top'（默认）或 'center'（居中）
+   */
+  position?: 'top' | 'center';
 }
 
 type StrikeMessageOptions = Omit<MessageOptions, 'darkSelector'>;
@@ -20,7 +24,7 @@ export type MessageTypes = 'info' | 'warning' | 'success' | 'error';
 
 const PREFIX = 'vavt';
 
-const CSS_TEXT = `@keyframes ${PREFIX}FadeInDown{0%{opacity:0;transform:translate3d(-50%,-100%,0)}to{opacity:1;transform:translate3d(-50%,0,0)}}@keyframes ${PREFIX}FadeOutUp{0%{opacity:1}to{opacity:0;transform:translate3d(-50%,-100%,0)}}.${PREFIX}-fid{animation-name:${PREFIX}FadeInDown;animation-duration:.3s;animation-fill-mode:both}.${PREFIX}-fou{animation-name:${PREFIX}FadeOutUp;animation-duration:.3s;animation-fill-mode:both}.${PREFIX}-message{position:fixed;left:50%;transform:translate(-50%);padding:10px 16px;border-radius:4px;color:#fff;font-size:14px;line-height:normal;transition:top .5s ease}.${PREFIX}-message.${PREFIX}-closeable{padding:10px 40px 10px 16px}.${PREFIX}-icon{width:18px;height:18px;margin-right:8px;vertical-align:sub}.${PREFIX}-icon-close{width:16px;height:16px;margin-right:0;cursor:pointer;position:absolute;right:16px;top:50%;transform:translateY(-50%)}.${PREFIX}-message-info{color:#333;background-color:#e3e3e3}.${PREFIX}-message-warning{color:#ff9104;background-color:#ffe9cc}.${PREFIX}-message-success{color:#00c852;background-color:#c1f1d5}.${PREFIX}-message-error{color:#d32f2f;background-color:#ffd8d8}:root[data-theme=dark] .${PREFIX}-message-info{color:#999;background-color:#212121}:root[data-theme=dark] .${PREFIX}-message-warning{color:#ed8500;background-color:#3c2200}:root[data-theme=dark] .${PREFIX}-message-success{color:#00c551;background-color:#003014}:root[data-theme=dark] .${PREFIX}-message-error{color:#ef1d1d;background-color:#3b0000}`;
+const CSS_TEXT = `@keyframes ${PREFIX}FadeInDown{0%{opacity:0;transform:translate3d(-50%,-100%,0)}to{opacity:1;transform:translate3d(-50%,0,0)}}@keyframes ${PREFIX}FadeOutUp{0%{opacity:1}to{opacity:0;transform:translate3d(-50%,-100%,0)}}@keyframes ${PREFIX}FadeIn{0%{opacity:0}to{opacity:1}}@keyframes ${PREFIX}FadeOut{0%{opacity:1}to{opacity:0}}.${PREFIX}-fid{animation-name:${PREFIX}FadeInDown;animation-duration:.3s;animation-fill-mode:both}.${PREFIX}-fou{animation-name:${PREFIX}FadeOutUp;animation-duration:.3s;animation-fill-mode:both}.${PREFIX}-fadein{animation-name:${PREFIX}FadeIn;animation-duration:.3s;animation-fill-mode:both}.${PREFIX}-fadeout{animation-name:${PREFIX}FadeOut;animation-duration:.3s;animation-fill-mode:both}.${PREFIX}-message{position:fixed;padding:10px 16px;border-radius:4px;color:#fff;font-size:14px;line-height:normal;transition:top .5s ease}.${PREFIX}-message-top{left:50%;transform:translate(-50%);}.${PREFIX}-message-center{top:40%;left:50%;transform:translate(-50%,-50%);margin:0;max-width:80vw;}.${PREFIX}-message.${PREFIX}-closeable{padding:10px 40px 10px 16px}.${PREFIX}-icon{width:18px;height:18px;margin-right:8px;vertical-align:sub}.${PREFIX}-icon-close{width:16px;height:16px;margin-right:0;cursor:pointer;position:absolute;right:16px;top:50%;transform:translateY(-50%)}.${PREFIX}-message-info{color:#333;background-color:#e3e3e3}.${PREFIX}-message-warning{color:#ff9104;background-color:#ffe9cc}.${PREFIX}-message-success{color:#00c852;background-color:#c1f1d5}.${PREFIX}-message-error{color:#d32f2f;background-color:#ffd8d8}:root[data-theme=dark] .${PREFIX}-message-info{color:#999;background-color:#212121}:root[data-theme=dark] .${PREFIX}-message-warning{color:#ed8500;background-color:#3c2200}:root[data-theme=dark] .${PREFIX}-message-success{color:#00c551;background-color:#003014}:root[data-theme=dark] .${PREFIX}-message-error{color:#ef1d1d;background-color:#3b0000}`;
 const CSS_ID = `${PREFIX}-message-css`;
 
 const ICONS: { [key in MessageTypes]: string } = {
@@ -34,6 +38,8 @@ const CLOSE_ICON = `<svg class="${PREFIX}-icon ${PREFIX}-icon-close" viewBox="0 
 
 const FADE_OUT_UP = `${PREFIX}-fou`;
 const FADE_IN_DOWN = `${PREFIX}-fid`;
+const FADE_IN = `${PREFIX}-fadein`;
+const FADE_OUT = `${PREFIX}-fadeout`;
 
 const DEFAULT_SELECTOR = ':root[data-theme=dark]';
 
@@ -46,6 +52,7 @@ export const Message = class {
     closeable: false,
     darkSelector: DEFAULT_SELECTOR,
     zIndex: 9999,
+    position: 'top',
   };
   #list: Set<MessageObj> = new Set();
 
@@ -55,10 +62,7 @@ export const Message = class {
     let styleEle = document.querySelector<HTMLStyleElement>(`#${CSS_ID}`);
     if (!styleEle) {
       styleEle = document.createElement('style');
-      styleEle.innerHTML = CSS_TEXT.replace(
-        DEFAULT_SELECTOR,
-        this.#options.darkSelector
-      );
+      styleEle.innerHTML = CSS_TEXT.replace(DEFAULT_SELECTOR, this.#options.darkSelector);
       styleEle.id = CSS_ID;
       document.head.appendChild(styleEle);
     }
@@ -76,42 +80,77 @@ export const Message = class {
     }
 
     const { ele, top } = _message;
-    ele.classList.add(FADE_OUT_UP);
-
-    // 清除占用的top
-    const spaceHeight = _message.offsetTop + _message.ele.offsetHeight;
-    this.#nextTop -= spaceHeight;
-    this.#list.delete(_message);
-
-    // 遍历已存在的且top大于当前关闭的message，将他们往上移动top的值
-    this.#list.forEach((messageItem) => {
-      if (messageItem.top > top) {
-        messageItem.top -= spaceHeight;
-        messageItem.ele.style.top = `${messageItem.top}px`;
-      }
-    });
+    if (ele.classList.contains(`${PREFIX}-message-center`)) {
+      ele.classList.add(FADE_OUT);
+      // 居中消息不影响顶部消息的累计高度
+      this.#list.delete(_message);
+    } else {
+      ele.classList.add(FADE_OUT_UP);
+      // 只在顶部消息关闭时调整累计高度
+      const spaceHeight = _message.offsetTop + _message.ele.offsetHeight;
+      this.#nextTop -= spaceHeight;
+      this.#list.delete(_message);
+      // 遍历已存在的且top大于当前关闭的message，将他们往上移动top的值
+      this.#list.forEach((messageItem) => {
+        if (messageItem.top > top) {
+          messageItem.top -= spaceHeight;
+          messageItem.ele.style.top = `${messageItem.top}px`;
+        }
+      });
+    }
 
     ele.addEventListener('animationend', () => {
       ele.remove();
     });
   }
 
-  #showMessage(
-    type: MessageTypes,
-    message: string,
-    options: MessageOptions = {}
-  ) {
+  #showMessage(type: MessageTypes, message: string, options: MessageOptions = {}) {
     this.#appendCss();
 
     const _options = { ...this.#options, ...options };
 
-    if (_options.single) {
+    // 居中模式强制只显示一个
+    if (_options.position === 'center') {
+      this.closeAll();
+      _options.single = true;
+    } else if (_options.single) {
       this.closeAll();
     }
 
-    // 获取距离顶部状态
-    const currTop = (this.#nextTop += _options.offsetTop);
+    let currTop = 0;
     const ele = document.createElement('div');
+
+    // 内容
+    ele.innerHTML = `${ICONS[type]}${message}`;
+
+    // 属性
+    ele.classList.add(`${PREFIX}-message`, `${PREFIX}-message-${type}`);
+    if (_options.position === 'center') {
+      ele.classList.add(`${PREFIX}-message-center`);
+      ele.classList.add(FADE_IN);
+    } else {
+      ele.classList.add(`${PREFIX}-message-top`);
+      ele.classList.add(FADE_IN_DOWN);
+    }
+    _options.class && ele.classList.add(_options.class);
+    ele.style.zIndex = `${_options.zIndex}`;
+
+    if (_options.position === 'center') {
+      // 居中无需额外设置
+    } else {
+      // 计算 top，首条消息 top = offsetTop，后续累加
+      if (this.#nextTop === 0) {
+        currTop = _options.offsetTop;
+      } else {
+        currTop = this.#nextTop + _options.offsetTop;
+      }
+      ele.style.top = `${currTop}px`;
+      ele.style.visibility = 'hidden';
+      document.body.appendChild(ele);
+      ele.style.visibility = '';
+      // 把当前高度累计上去
+      this.#nextTop = currTop + ele.offsetHeight;
+    }
 
     // 代理一下当前实例，在别的实例移除时，会重新设置其他实例的top
     const thisObj: MessageObj = {
@@ -119,17 +158,15 @@ export const Message = class {
       top: currTop,
       offsetTop: _options.offsetTop,
     };
-
     this.#list.add(thisObj);
 
-    // 内容
-    ele.innerHTML = `${ICONS[type]}${message}`;
+    if (_options.position === 'center') {
+      document.body.appendChild(ele);
+    }
 
     if (_options.closeable) {
-      const closeIconDom = new DOMParser().parseFromString(
-        CLOSE_ICON,
-        'text/html'
-      ).body.firstElementChild as HTMLElement;
+      const closeIconDom = new DOMParser().parseFromString(CLOSE_ICON, 'text/html').body
+        .firstElementChild as HTMLElement;
       closeIconDom.addEventListener('click', () => {
         this.#handleClose(thisObj);
       });
@@ -137,24 +174,15 @@ export const Message = class {
       ele.appendChild(closeIconDom);
     }
 
-    // 属性
-    ele.classList.add(
-      `${PREFIX}-message`,
-      `${PREFIX}-message-${type}`,
-      FADE_IN_DOWN
-    );
-    _options.class && ele.classList.add(_options.class);
-    ele.style.top = `${currTop}px`;
-    ele.style.zIndex = `${_options.zIndex}`;
-
-    document.body.appendChild(ele);
-
-    // 把当前高度累计上去
-    this.#nextTop += ele.offsetHeight;
-
-    ele.addEventListener('animationend', () => {
-      ele.classList.remove(FADE_IN_DOWN);
-    });
+    if (_options.position === 'center') {
+      ele.addEventListener('animationend', () => {
+        ele.classList.remove(FADE_IN);
+      });
+    } else {
+      ele.addEventListener('animationend', () => {
+        ele.classList.remove(FADE_IN_DOWN);
+      });
+    }
 
     // 添加关闭事件
     // 鼠标hover时，不会关闭
@@ -233,10 +261,17 @@ export const Message = class {
     this.#nextTop = 0;
 
     this.#list.forEach(({ ele }) => {
-      ele.classList.add(FADE_OUT_UP);
-      ele.addEventListener('animationend', () => {
-        ele.remove();
-      });
+      if (ele.classList.contains(`${PREFIX}-message-center`)) {
+        ele.classList.add(FADE_OUT);
+        ele.addEventListener('animationend', () => {
+          ele.remove();
+        });
+      } else {
+        ele.classList.add(FADE_OUT_UP);
+        ele.addEventListener('animationend', () => {
+          ele.remove();
+        });
+      }
     });
 
     this.#list.clear();

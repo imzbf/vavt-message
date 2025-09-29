@@ -39,13 +39,14 @@
       <button id="duration01">更新内容</button>
 
       <button id="closeAll">关闭全部</button>
+
+      <button id="center">居中消息</button>
     </div>
 
     <script type="module">
       import { message } from './index.ts';
 
-      const msg =
-        'So even though we face the difficulties of today and tomorrow, I still have a dream.';
+      const msg = 'So even though we face the difficulties of today and tomorrow, I still have a dream.';
 
       document.getElementById('changeTheme').onclick = () => {
         const theme = document.documentElement.dataset.theme || 'light';
@@ -87,6 +88,12 @@
 
       document.getElementById('closeAll').onclick = () => {
         message.closeAll();
+      };
+
+      document.getElementById('center').onclick = () => {
+        message.info(msg, {
+          position: 'center',
+        });
       };
     </script>
   </body>

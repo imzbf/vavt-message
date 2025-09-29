@@ -39,6 +39,7 @@ message.closeAll();
 | closeable    | false                    | 是否显示关闭按钮                                       |
 | darkSelector | `:root[data-theme=dark]` | 暗夜模式的选择器，只能通过`config`配置，不能调用时设置 |
 | zIndex       | 9999                     |                                                        |
+| position     | 'top'                    | 消息出现位置，'top'（默认）或 'center'（居中）         |
 
 ### 配置方式
 
